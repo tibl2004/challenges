@@ -13,7 +13,7 @@ function App() {
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    // Neue Daten hinzufügen
+    // Neue Daten zum Firebase-Backend senden
     addData(inputValue);
 
     // Input-Feld zurücksetzen
