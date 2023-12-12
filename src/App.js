@@ -1,15 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { DataProvider, useDataContext } from './DataContext';
 import './App.scss';
 
 function App() {
-  const [inputValue, setInputValue] = useState('');
-  const [storedData, setStoredData] = useState([]);
-
-  useEffect(() => {
-    // Daten aus dem localStorage beim Laden der Seite abrufen
-    const storedDataFromLocalStorage = JSON.parse(localStorage.getItem('data')) || [];
-    setStoredData(storedDataFromLocalStorage);
-  }, []);
+  const { storedData, addData } = useDataContext();
+  const [inputValue, setInputValue] = React.useState('');
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
@@ -18,12 +13,8 @@ function App() {
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    // Neue Daten zum bestehenden Array hinzufügen
-    const newData = [...storedData, inputValue];
-    setStoredData(newData);
-
-    // Daten im localStorage speichern
-    localStorage.setItem('data', JSON.stringify(newData));
+    // Neue Daten hinzufügen
+    addData(inputValue);
 
     // Input-Feld zurücksetzen
     setInputValue('');
@@ -49,4 +40,10 @@ function App() {
   );
 }
 
-export default App;
+const AppWithProvider = () => (
+  <DataProvider>
+    <App />
+  </DataProvider>
+);
+
+export default AppWithProvider;
